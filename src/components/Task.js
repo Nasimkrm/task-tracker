@@ -1,13 +1,18 @@
 import { db } from "../firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { Box, Button, Typography } from "@mui/material";
+import { taskActions } from "../redux/tasksSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Task = ({ task, setTasks, tasks, setTasksReset, tasksReset }) => {
+  const dispatch = useDispatch();
+  // const {setReset} = useSelector((state) => state.taskActions.setReset);
   const handleMarkComplete = async () => {
     const docRef = doc(db, "nasim-tasks", task.id);
 
     await updateDoc(docRef, { complete: !task.complete });
-    setTasksReset(!tasksReset);
+    dispatch(taskActions.setReset());
+    // setTasksReset(!tasksReset);
     // const tempArray = [...tasks];
     // console.log(tempArray);
     // tempArray.forEach((oldTask, index) => {
@@ -42,10 +47,8 @@ const Task = ({ task, setTasks, tasks, setTasksReset, tasksReset }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-
             color: "#555",
             py: "7px",
-
             boxShadow: "0 0 3px #aaa",
             bordeRadius: "5px",
             border: "none",

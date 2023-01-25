@@ -4,23 +4,29 @@ import LoginContainer from "./components/LoginContainer";
 import ProfileContainer from "./components/ProfileContainer";
 import TasksContainer from "./components/TasksContainer";
 import store from "./redux/store";
-import { Provider } from "react-redux";
+import { Provider, useSelector, useDispatch } from "react-redux";
 import InitialProvider from "./redux/InitialRequests";
+import { authActions } from "./redux/authSlice";
+
 function App() {
-  const checkIfLoggedIn = () => {};
+  // const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
-  checkIfLoggedIn();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const checkIfLoggedIn = () => {};
 
-  useEffect(() => {
-    const logInCheck = localStorage.getItem("isLoggedIn");
+  // checkIfLoggedIn();
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    if (logInCheck === "yes") {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const logInCheck = localStorage.getItem("isLoggedIn");
+
+  //   if (logInCheck === "yes") {
+  //     // setIsLoggedIn(true);
+  //     dispatch(authActions.login());
+  //   } else {
+  //     // setIsLoggedIn(false);
+  //     dispatch(authActions.logout());
+  //   }
+  // }, []);
   return (
     <Provider store={store}>
       <Router>

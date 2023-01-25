@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import TextInput from "./TextInput";
 import SubmitButton from "./SubmitButton";
 import { useEffect } from "react";
+import { authActions } from "../redux/authSlice";
+import { useDispatch } from "react-redux";
 
 const LoginContainer = ({ setIsLoggedIn }) => {
-  const [email, setEmail] = useState(
-    "This is the text we'll show on text load"
-  );
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
-  //The function in useEffect runs at every render. Once when component loads, and also any time the data/state changes. useEffect( function(), dependecy array). useEffect will watch if the state of whatever we passed in the array, changes and runs the function.
   useEffect(() => {
     if (emailIsValid && passwordIsValid) {
       setIsDisabled(false);
@@ -23,8 +23,9 @@ const LoginContainer = ({ setIsLoggedIn }) => {
 
   const handleClick = () => {
     console.log(email, password);
-    setIsLoggedIn(true);
-    localStorage.setItem("isLoggedIn", "yes");
+    // setIsLoggedIn(true);
+    dispatch(authActions.login());
+    // localStorage.setItem("isLoggedIn", "yes");
   };
 
   const validateEmail = (event) => {

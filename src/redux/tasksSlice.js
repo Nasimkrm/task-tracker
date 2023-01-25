@@ -21,7 +21,7 @@ const tasksSlice = createSlice({
 export const getAllTasks = () => {
   return async (dispatch) => {
     const getTasks = async () => {
-      const colRef = collection(db, "tasks-ryan");
+      const colRef = collection(db, "nasim-tasks");
       const snapshot = await getDocs(colRef);
       const tempResults = [];
       snapshot.forEach((row) => {
