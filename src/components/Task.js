@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Task = ({ task, setTasks, tasks, setTasksReset, tasksReset }) => {
   const dispatch = useDispatch();
+  // const { setReset } = taskActions.setReset;
   const handleMarkComplete = async () => {
     const docRef = doc(db, "nasim-tasks", task.id);
-    //const {setReset} = useSelector((state)=> state.taskActions.setReset)
+
     await updateDoc(docRef, { complete: !task.complete });
     dispatch(taskActions.setReset());
     // setTasksReset(!tasksReset);
