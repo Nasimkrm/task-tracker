@@ -10,8 +10,6 @@ const TextInput = ({
   name,
   value,
 }) => {
-  const valid = false;
-
   const handleChange = (event) => {
     setValue(event.target.value);
     handleValidation(event);

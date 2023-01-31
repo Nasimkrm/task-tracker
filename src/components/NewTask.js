@@ -4,16 +4,6 @@ import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { Box, Paper, Typography, Button, TextField } from "@mui/material";
 
-import { createTheme, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#ff5f5d",
-    },
-  },
-});
-
 const NewTask = () => {
   // useEffect(() => {
   //   setLoggedIn(true);
@@ -56,11 +46,6 @@ const NewTask = () => {
 
   const handleSubmit = async () => {
     const formDataToSubmit = {
-      // userName,
-      // taskName,
-      // taskDescription,
-      // dueDate,
-      // priority,
       ...input,
       complete: false,
     };
@@ -77,7 +62,6 @@ const NewTask = () => {
   };
 
   return (
-    // <ThemeProvider theme={theme}>
     <Paper sx={{ width: "80%", margin: "10px auto", px: 2, py: 2 }}>
       <Typography variant="h5" sx={{ fontWeight: "bolder", mb: 3 }}>
         Create New Task
@@ -190,7 +174,6 @@ const NewTask = () => {
         </Button>
       </Box>
     </Paper>
-    // </ThemeProvider>
   );
 };
 

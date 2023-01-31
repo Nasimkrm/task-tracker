@@ -2,25 +2,17 @@ import { db } from "../firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { Box, Button, Typography } from "@mui/material";
 import { taskActions } from "../redux/tasksSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { hover } from "@testing-library/user-event/dist/hover";
 
-const Task = ({ task, setTasks, tasks, setTasksReset, tasksReset }) => {
+const Task = ({ task }) => {
   const dispatch = useDispatch();
-  // const { setReset } = taskActions.setReset;
+  const { setReset } = taskActions;
   const handleMarkComplete = async () => {
     const docRef = doc(db, "nasim-tasks", task.id);
 
     await updateDoc(docRef, { complete: !task.complete });
-    dispatch(taskActions.setReset());
-    // setTasksReset(!tasksReset);
-    // const tempArray = [...tasks];
-    // console.log(tempArray);
-    // tempArray.forEach((oldTask, index) => {
-    //   if (oldTask.id === task.id) {
-    //     tempArray[index].complete = !oldTask.complete;
-    //   }
-
-    //   setTasks(tempArray);
+    dispatch(setReset());
   };
   return (
     <Box
@@ -47,13 +39,16 @@ const Task = ({ task, setTasks, tasks, setTasksReset, tasksReset }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            color: "#555",
+            color: "#fff",
             py: "7px",
             boxShadow: "0 0 3px #aaa",
             bordeRadius: "5px",
             border: "none",
-            backgroundColor: "#fff",
+            backgroundColor: task.complete === false ? "#ff000f" : "#34b233",
             fontFamily: "inherit",
+            "&:hover": {
+              color: "#666666",
+            },
           }}
           onClick={handleMarkComplete}
         >
