@@ -3,7 +3,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import { Box, Button, Typography } from "@mui/material";
 import { taskActions } from "../redux/tasksSlice";
 import { useDispatch } from "react-redux";
-import { hover } from "@testing-library/user-event/dist/hover";
 
 const Task = ({ task }) => {
   const dispatch = useDispatch();
