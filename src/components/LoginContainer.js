@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import TextInput from "./TextInput";
 import SubmitButton from "./SubmitButton";
 import { useEffect } from "react";
-import { authActions } from "../redux/authSlice";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 import { useDispatch } from "react-redux";
 
-const LoginContainer = ({ setIsLoggedIn }) => {
-  const dispatch = useDispatch();
+import { useNavigate } from "react-router-dom";
+
+const LoginContainer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (emailIsValid && passwordIsValid) {
@@ -20,13 +25,6 @@ const LoginContainer = ({ setIsLoggedIn }) => {
       setIsDisabled(true);
     }
   }, [emailIsValid, passwordIsValid]);
-
-  const handleClick = () => {
-    console.log(email, password);
-    // setIsLoggedIn(true);
-    dispatch(authActions.login());
-    // localStorage.setItem("isLoggedIn", "yes");
-  };
 
   const validateEmail = (event) => {
     const email = event.target.value;
@@ -48,6 +46,19 @@ const LoginContainer = ({ setIsLoggedIn }) => {
       console.log("password is not valid");
       setPasswordIsValid(false);
     }
+  };
+
+  const handleClick = async () => {
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        navigate("/home");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Error ocured: ", errorCode, errorMessage);
+      });
   };
 
   return (

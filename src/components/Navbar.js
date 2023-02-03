@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
-import { authActions } from "../redux/authSlice";
-import { useDispatch } from "react-redux";
-const Navbar = ({ setIsLoggedIn }) => {
-  const dispatch = useDispatch();
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
+const Navbar = () => {
+  const navigate = useNavigate();
   const handleLogOut = () => {
-    // setIsLoggedIn(false);
-    dispatch(authActions.logout());
-    // localStorage.setItem("isLoggedIn", "no");
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   };
 
   return (

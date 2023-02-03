@@ -1,42 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginContainer from "./components/LoginContainer";
 import ProfileContainer from "./components/ProfileContainer";
 import TasksContainer from "./components/TasksContainer";
 import store from "./redux/store";
-import { Provider, useSelector, useDispatch } from "react-redux";
-import InitialProvider from "./redux/InitialRequests";
+import { Provider } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "./redux/authSlice";
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import InitialProvider from "./redux/InitialRequests";
+import { useEffect } from "react";
+import ProtectedRoute from "./ProtectedRoutes";
 
 function App() {
-  // const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.value);
+  const dispatch = useDispatch();
 
-  // const checkIfLoggedIn = () => {};
-
-  // checkIfLoggedIn();
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // useEffect(() => {
-  //   const logInCheck = localStorage.getItem("isLoggedIn");
-
-  //   if (logInCheck === "yes") {
-  //     // setIsLoggedIn(true);
-  //     dispatch(authActions.login());
-  //   } else {
-  //     // setIsLoggedIn(false);
-  //     dispatch(authActions.logout());
-  //   }
-  // }, []);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(authActions.saveUser(user.refreshToken));
+      } else {
+        dispatch(authActions.saveUser(undefined));
+      }
+    });
+  });
 
   return (
     <Provider store={store}>
       <Router>
         <InitialProvider />
+
         <Routes>
-          <Route path="/login" element={<LoginContainer />} />
-          <Route path="/tasks" element={<TasksContainer />} />
-          <Route path="/profile" element={<ProfileContainer />} />
-          <Route path="/" element={<TasksContainer />} />
+          <Route path="/" element={<LoginContainer />} />
+
+          <Route
+            path="/tasks"
+            element={
+              <ProtectedRoute>
+                <TasksContainer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfileContainer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <TasksContainer />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Router>
     </Provider>
