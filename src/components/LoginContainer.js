@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextInput from "./TextInput";
 import SubmitButton from "./SubmitButton";
 import { useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useDispatch } from "react-redux";
 
@@ -49,7 +49,7 @@ const LoginContainer = () => {
   };
 
   const handleClick = async () => {
-    await signInWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         navigate("/home");
