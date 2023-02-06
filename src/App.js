@@ -12,6 +12,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import InitialProvider from "./redux/InitialRequests";
 import { useEffect } from "react";
 import ProtectedRoute from "./ProtectedRoutes";
+import SignUp from "./components/SignUp";
 
 function App() {
   const user = useSelector((state) => state.auth.value);
@@ -34,6 +35,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<LoginContainer />} />
+          <Route path="/signup" element={<SignUp />} />
 
           <Route
             path="/tasks"

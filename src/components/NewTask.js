@@ -5,10 +5,6 @@ import { collection, addDoc } from "firebase/firestore";
 import { Box, Paper, Typography, Button, TextField } from "@mui/material";
 
 const NewTask = () => {
-  // useEffect(() => {
-  //   setLoggedIn(true);
-  // }, []);
-
   const [input, setInput] = useState({
     userName: "",
     taskName: "",
@@ -38,7 +34,6 @@ const NewTask = () => {
 
     console.log(input);
 
-    //...everything including username and event.target.value:isValid would overwrite the existing username with the new isValid value?
     const newValidationObject = { ...validation, [event.target.name]: isValid };
 
     setValidation(newValidationObject);

@@ -1,10 +1,11 @@
 import { Paper, Avatar, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
 import EditProfileDialogue from "./EditProfileDialogue";
+import { auth } from "../firebase";
 const ProfileCard = () => {
   const [user, setUser] = useState({
-    username: "Nassim",
-    description: "Software developer",
+    username: auth.currentUser.email.split("@")[0],
+    description: "Enter your employment status",
   });
 
   const [open, setOpen] = useState(false);

@@ -1,21 +1,18 @@
-import React, { useState } from "react";
 import TextInput from "./TextInput";
+import { useState, useEffect } from "react";
 import SubmitButton from "./SubmitButton";
-import { useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { useDispatch } from "react-redux";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "@mui/material";
 
-const LoginContainer = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,7 +46,7 @@ const LoginContainer = () => {
   };
 
   const handleClick = async () => {
-    await signInWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         navigate("/home");
@@ -60,10 +57,9 @@ const LoginContainer = () => {
         console.log("Error ocured: ", errorCode, errorMessage);
       });
   };
-
   return (
     <div className="login-box">
-      <div className="login-title">Login</div>
+      <div className="login-title">Sign Up</div>
       <TextInput
         value={email}
         label="Email"
@@ -82,7 +78,7 @@ const LoginContainer = () => {
       />
       <SubmitButton handleClick={handleClick} isDisabled={isDisabled} />
       <Link
-        href="/signup"
+        href="/"
         underline="hover"
         sx={{
           padding: "10px",
@@ -91,10 +87,10 @@ const LoginContainer = () => {
           justifyContent: "center",
         }}
       >
-        Don't have an account? Sign up here
+        Already have an account? Login here
       </Link>
     </div>
   );
 };
 
-export default LoginContainer;
+export default SignUp;
