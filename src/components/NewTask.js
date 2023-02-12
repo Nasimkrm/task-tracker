@@ -160,7 +160,7 @@ const NewTask = () => {
           sx={{ mt: "40px" }}
           onClick={handleSubmit}
           disabled={
-            Object.values(validation).every((value) => value == true)
+            Object.values(validation).every((value) => value === true)
               ? false
               : true
           }

@@ -1,18 +1,29 @@
 import { db } from "../firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { collection, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { Box, Button, Typography } from "@mui/material";
-import { taskActions } from "../redux/tasksSlice";
-import { useDispatch } from "react-redux";
+import tasksSlice, { taskActions } from "../redux/tasksSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Task = ({ task }) => {
   const dispatch = useDispatch();
   const { setReset } = taskActions;
+  const { setTasks } = taskActions;
+  const { deleteTask } = taskActions;
+  const tasks = useSelector((state) => state.tasks);
+
   const handleMarkComplete = async () => {
     const docRef = doc(db, "nasim-tasks", task.id);
 
     await updateDoc(docRef, { complete: !task.complete });
     dispatch(setReset());
   };
+
+  // const handleDelete = async (id) => {
+  //   dispatch(deleteTask());
+  //   // setTasks(tasks);
+  // };
+
   return (
     <Box
       sx={{
@@ -93,6 +104,17 @@ const Task = ({ task }) => {
           {task.dueDate}
         </Typography>
       </Box>
+      <Button
+        sx={{
+          width: "120px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onClick={() => dispatch(deleteTask(task.id))}
+      >
+        Delete
+      </Button>
     </Box>
   );
 };
