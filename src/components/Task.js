@@ -1,16 +1,13 @@
 import { db } from "../firebase";
-import { collection, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { Box, Button, Typography } from "@mui/material";
-import tasksSlice, { taskActions } from "../redux/tasksSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { taskActions } from "../redux/tasksSlice";
+import { useDispatch } from "react-redux";
 
 const Task = ({ task }) => {
   const dispatch = useDispatch();
   const { setReset } = taskActions;
-  const { setTasks } = taskActions;
   const { deleteTask } = taskActions;
-  const tasks = useSelector((state) => state.tasks);
 
   const handleMarkComplete = async () => {
     const docRef = doc(db, "nasim-tasks", task.id);
@@ -18,11 +15,6 @@ const Task = ({ task }) => {
     await updateDoc(docRef, { complete: !task.complete });
     dispatch(setReset());
   };
-
-  // const handleDelete = async (id) => {
-  //   dispatch(deleteTask());
-  //   // setTasks(tasks);
-  // };
 
   return (
     <Box
@@ -110,10 +102,11 @@ const Task = ({ task }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          fontSize: "10px",
         }}
         onClick={() => dispatch(deleteTask(task.id))}
       >
-        Delete
+        Remove Task
       </Button>
     </Box>
   );

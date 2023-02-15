@@ -5,6 +5,9 @@ import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "@mui/material";
+import { Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { authActions } from "../redux/authSlice";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +17,7 @@ const SignUp = () => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (emailIsValid && passwordIsValid) {
@@ -36,6 +40,7 @@ const SignUp = () => {
 
   const validatePassword = (event) => {
     const password = event.target.value;
+
     if (password.length >= 8) {
       console.log("password is valid");
       setPasswordIsValid(true);
@@ -50,6 +55,7 @@ const SignUp = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         navigate("/home");
+        dispatch(authActions.saveUser(user));
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -76,6 +82,10 @@ const SignUp = () => {
         handleValidation={validatePassword}
         isValid={passwordIsValid}
       />
+      <Typography variant="subtitle2" sx={{ color: "gray" }}>
+        *Password has to be at least 8 characters long and contain at least one
+        letter, one number and one special character
+      </Typography>
       <SubmitButton handleClick={handleClick} isDisabled={isDisabled} />
       <Link
         href="/"

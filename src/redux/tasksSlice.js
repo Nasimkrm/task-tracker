@@ -30,7 +30,6 @@ export const getAllTasks = () => {
       snapshot.forEach((row) => {
         tempResults.push({ ...row.data(), id: row.id });
       });
-      console.log(tempResults);
       return tempResults;
     };
     try {

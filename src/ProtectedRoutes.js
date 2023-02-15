@@ -1,11 +1,27 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { auth } from "./firebase";
+import { authActions } from "./redux/authSlice";
 
 const ProtectedRoute = ({ children }) => {
-  const user = useSelector((state) => state.auth.value);
+  const authenticated = useSelector((state) => state.auth.value);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  return user ? <>{children}</> : <Navigate to="/" />;
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(authActions.saveUser(user.refreshToken));
+      } else {
+        dispatch(authActions.saveUser(null));
+        navigate("/");
+      }
+    });
+  });
+
+  return authenticated ? <>{children}</> : null;
 };
 
 export default ProtectedRoute;

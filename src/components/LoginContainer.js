@@ -4,7 +4,6 @@ import SubmitButton from "./SubmitButton";
 import { useEffect } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "@mui/material";
 
@@ -15,7 +14,6 @@ const LoginContainer = () => {
   const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,10 +27,8 @@ const LoginContainer = () => {
   const validateEmail = (event) => {
     const email = event.target.value;
     if (email.includes("@")) {
-      console.log("email is valid");
       setEmailIsValid(true);
     } else {
-      console.log("email is not valid");
       setEmailIsValid(false);
     }
   };
@@ -40,10 +36,8 @@ const LoginContainer = () => {
   const validatePassword = (event) => {
     const password = event.target.value;
     if (password.length >= 8) {
-      console.log("password is valid");
       setPasswordIsValid(true);
     } else {
-      console.log("password is not valid");
       setPasswordIsValid(false);
     }
   };
@@ -51,7 +45,6 @@ const LoginContainer = () => {
   const handleClick = async () => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
         navigate("/home");
       })
       .catch((error) => {
@@ -80,6 +73,7 @@ const LoginContainer = () => {
         handleValidation={validatePassword}
         isValid={passwordIsValid}
       />
+
       <SubmitButton handleClick={handleClick} isDisabled={isDisabled} />
       <Link
         href="/signup"
@@ -91,7 +85,7 @@ const LoginContainer = () => {
           justifyContent: "center",
         }}
       >
-        Don't have an account? Sign up here
+        Don't have an account? Sign up here.
       </Link>
     </div>
   );

@@ -5,29 +5,11 @@ import ProfileContainer from "./components/ProfileContainer";
 import TasksContainer from "./components/TasksContainer";
 import store from "./redux/store";
 import { Provider } from "react-redux";
-import { useSelector, useDispatch } from "react-redux";
-import { authActions } from "./redux/authSlice";
-import { auth } from "./firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import InitialProvider from "./redux/InitialRequests";
-import { useEffect } from "react";
 import ProtectedRoute from "./ProtectedRoutes";
 import SignUp from "./components/SignUp";
 
 function App() {
-  const user = useSelector((state) => state.auth.value);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        dispatch(authActions.saveUser(user.refreshToken));
-      } else {
-        dispatch(authActions.saveUser(undefined));
-      }
-    });
-  });
-
   return (
     <Provider store={store}>
       <Router>
@@ -36,7 +18,6 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginContainer />} />
           <Route path="/signup" element={<SignUp />} />
-
           <Route
             path="/tasks"
             element={
