@@ -16,6 +16,12 @@ const Task = ({ task }) => {
     dispatch(setReset());
   };
 
+  const handleDeleteTask = async () => {
+    const docRef = doc(db, "nasim-tasks", task.id);
+    await deleteDoc(docRef);
+    dispatch(deleteTask(task.id));
+  };
+
   return (
     <Box
       sx={{
@@ -104,11 +110,7 @@ const Task = ({ task }) => {
           alignItems: "center",
           fontSize: "10px",
         }}
-        onClick={() => {
-          let docRef = doc(db, "nasim-tasks", task.id);
-          deleteDoc(docRef);
-          dispatch(deleteTask(task.id));
-        }}
+        onClick={handleDeleteTask}
       >
         Remove Task
       </Button>
