@@ -18,7 +18,13 @@ const Task = ({ task }) => {
 
   const handleDeleteTask = async () => {
     const docRef = doc(db, "nasim-tasks", task.id);
-    await deleteDoc(docRef);
+    await deleteDoc(docRef)
+      .then(() => {
+        console.log("Task successfully deleted");
+      })
+      .catch((error) => {
+        console.error("Error deleting Task: ", error);
+      });
     dispatch(deleteTask(task.id));
   };
 
