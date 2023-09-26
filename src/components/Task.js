@@ -1,5 +1,5 @@
 import { db } from "../firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { Box, Button, Typography } from "@mui/material";
 import { taskActions } from "../redux/tasksSlice";
 import { useDispatch } from "react-redux";
@@ -104,7 +104,11 @@ const Task = ({ task }) => {
           alignItems: "center",
           fontSize: "10px",
         }}
-        onClick={() => dispatch(deleteTask(task.id))}
+        onClick={() => {
+          let docRef = doc(db, "nasim-tasks", task.id);
+          deleteDoc(docRef);
+          dispatch(deleteTask(task.id));
+        }}
       >
         Remove Task
       </Button>
