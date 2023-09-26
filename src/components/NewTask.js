@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { Box, Paper, Typography, Button, TextField } from "@mui/material";
+import { taskActions } from "../redux/tasksSlice";
 
 const NewTask = () => {
+  const dispatch = useDispatch();
+  const { setReset } = taskActions;
   const [input, setInput] = useState({
     userName: "",
     taskName: "",
@@ -53,6 +57,7 @@ const NewTask = () => {
     setInput({ priority: "" });
 
     console.log(formDataToSubmit);
+    dispatch(setReset());
   };
 
   return (
